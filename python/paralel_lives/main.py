@@ -1,4 +1,3 @@
-import time
 import requests
 from bs4 import BeautifulSoup
 
@@ -18,10 +17,12 @@ for i in range(len(hrefs)):
     title_html = soup.find('h1')
     if title_html != None:
         title = title_html.text.strip().split('\n')[1]
-        print(title_html.text)
+        print(title)
         paragraphs = soup.find_all('p')
-
+        text = ''
         for p in paragraphs:
-            text = p.text.replace('Â','').replace('â','').replace('Ã','').replace('ã','')
-            with open(title + '.txt', 'a', encoding='utf-8') as file:
-                file.write(text)
+            aux = p.text.replace('Â','').replace('â','').replace('Ã','').replace('ã','')
+            if not text.__contains__(aux):
+                text += aux
+    with open(title + '.txt', 'w', encoding='utf-8') as file:
+        file.write(text)
