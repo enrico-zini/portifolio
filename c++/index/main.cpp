@@ -1,10 +1,7 @@
 #include <iostream>
 #include <fstream>
-#include <sstream>
 #include <map>
 #include <string>
-#include <algorithm>
-#include <cctype>
 #include <chrono>
 
 using namespace std;
@@ -14,11 +11,12 @@ class Word
 private:
     string word;
     int count;
+
 public:
     // Default Contructor
     Word() : word(""), count(0) {}
     // Constructor
-    Word(const string &w) : word(w), count(1) {}//comstructor receives a string w wich will be atributed to word
+    Word(const string &w) : word(w), count(1) {} // comstructor receives a string w wich will be atributed to word
 
     // Getter for the word
     string getWord() const
@@ -56,7 +54,7 @@ string cleanWord(const string &word)
 int main()
 {
     auto start = chrono::steady_clock::now();
-    
+
     ifstream file("cato.txt");
     if (!file.is_open())
     {
@@ -65,31 +63,31 @@ int main()
     }
 
     string word;
-    map<string,Word> words;//it tries to initialize the Word class, so it needs a default constructor with no arguments
-    
+    map<string, Word> words; // it tries to initialize the Word class, so it needs a default constructor with no arguments
+
     while (file >> word)
     { // Read each word from the file
         word = cleanWord(word);
         auto aux = words.find(word);
-        if(aux != words.end())// If found, returns an iterator pointing to the key-value pair in the map, If the key is not found, it returns words.end().
+        if (aux != words.end()) // If found, returns an iterator pointing to the key-value pair in the map, If the key is not found, it returns words.end().
         {
-            aux -> second.addCount();// gets the second member of the map i.e Word
+            aux->second.addCount(); // gets the second member of the map i.e Word
         }
         else
         {
             Word w(word);
-            words[word] = w;
+            words.emplace(word, w);// creates new pair
         }
     }
 
-    for (const auto& w : words)
+    for (const auto &w : words)
     {
         w.second.display();
     }
 
     auto end = chrono::steady_clock::now();
-    auto time_taken = end-start;
-    cout << chrono::duration<double,milli>(time_taken).count() << "ms" << endl; 
+    auto time_taken = end - start;
+    cout << chrono::duration<double, milli>(time_taken).count() << "ms" << endl;
 
     return 0;
 }
