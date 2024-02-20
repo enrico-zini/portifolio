@@ -70,7 +70,6 @@ int main()
     while (file >> word)
     { // Read each word from the file
         word = cleanWord(word);
-        bool found = false;
         auto aux = words.find(word);
         if(aux != words.end())// If found, returns an iterator pointing to the key-value pair in the map, If the key is not found, it returns words.end().
         {
