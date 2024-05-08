@@ -1,0 +1,8 @@
+No compilador no Windows:
+gcc -c linkedlist.c
+gcc -c dicionario.c
+gcc -c main.c
+gcc main.o dicionario.o linkedlist.o -lm
+./a.exe
+
+// -lm é para linkar a biblioteca math.h
