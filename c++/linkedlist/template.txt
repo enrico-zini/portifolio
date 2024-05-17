@@ -1,0 +1,21 @@
+https://www.codeproject.com/Articles/48575/How-to-Define-a-Template-Class-in-a-h-File-and-Imp
+https://stackoverflow.com/questions/495021/why-can-templates-only-be-implemented-in-the-header-file
+https://stackoverflow.com/questions/44774036/why-use-a-tpp-file-when-implementing-templated-functions-and-classes-defined-i
+
+
+para instanciar estrutura com template:
+
+1º metodo: instanciar os templates com os tipos desejados na implementação ou no header
+template struct LinkedList<int>;
+template struct LinkedList<double>;
+template struct LinkedList<char>;
+template struct LinkedList<float>;
+template struct LinkedList<std::string>;
+
+2º metodo: incluir a implementação junto com o header no main
+#include "linkedlist.hpp"
+#include "linkedlist.cpp"
+
+3º metodo: inclui implementação no final do header
+#include "linkedlist.ipp"
+#endif
