@@ -1,6 +1,8 @@
 #include <math.h>
 #include <chipmunk.h>
 #include <SOIL.h>
+#include <time.h>
+#include <stdlib.h>
 
 // Rotinas para acesso da OpenGL
 #include "opengl.h"
@@ -47,10 +49,12 @@ cpBody *ballBody;
 
 // Um robô
 cpBody *robotBody;
-cpBody *ronaldinho;
+cpBody *robotBody2;
 
 // Cada passo de simulação é 1/60 seg.
 cpFloat timeStep = 1.0 / 60.0;
+
+
 
 // Inicializa o ambiente: é chamada por init() em opengl.c, pois necessita do contexto
 // OpenGL para a leitura das imagens
@@ -86,10 +90,7 @@ void initCM()
 
     // ... e um robô de exemplo
     robotBody = newCircle(cpv(50, 350), 20, 2, "ship1.png", moveRobo, 0.2, 2);
-    Robot r1 = {robotBody, 0, 0};
-
-    // ronaldinho = newCircle(cpv(600, 350), 20, 5, "ship2.png", moveRobo, 0.2, 0.5);
-    // Robot r2 = {ronaldinho, 1, 1};
+    //Robot r1 = {robotBody, 0, 0};
 }
 
 int tocou(cpVect *robotPosition, cpVect *ballPosition)
@@ -105,6 +106,9 @@ int tocou(cpVect *robotPosition, cpVect *ballPosition)
 void moveRobo(cpBody *body, void *data)
 {
     // Veja como obter e limitar a velocidade do robô...
+    if(cpBodyGetPosition(body).x == 512 && cpBodyGetPosition(body).x == 350){
+
+    }
     cpVect vel = cpBodyGetVelocity(body);
     // printf("vel: %f %f", vel.x,vel.y);
 
@@ -127,12 +131,15 @@ void moveRobo(cpBody *body, void *data)
     delta = cpvmult(cpvnormalize(delta), 20);
     // Finalmente, aplica impulso no robô
     cpBodyApplyImpulseAtWorldPoint(body, delta, robotPos);
-    // if(robotPos.x < 300)// SE ROBO FOR DEFENSOR, SO VAI ATRAS DA BOLA ATE CERTO PONTO
-    // {
-    //     cpBodyApplyImpulseAtWorldPoint(body, delta, robotPos);
-    // }
+    if(robotPos.x > 100)// SE ROBO FOR DEFENSOR, SO VAI ATRAS DA BOLA ATE CERTO PONTO
+    {
+        if (delta.x > 0)
+        {
+            delta = cpv(-delta.x, 0);
+            cpBodyApplyImpulseAtWorldPoint(body, delta, robotPos);
+        }
+    }
 }
-
 cpVect chute(cpVect* ballPosition, cpVect* gol)
 {
     cpVect pos = *ballPosition;
@@ -146,11 +153,17 @@ cpVect chute(cpVect* ballPosition, cpVect* gol)
 // Exemplo: move a bola aleatoriamente
 void moveBola(cpBody *body, void *data)
 {
+    if(cpBodyGetPosition(body).x == 512 && cpBodyGetPosition(body).y == 350){
+        
+    }
+    cpVect impulso = cpv(rand()%20-10,rand()%20-10);
+    cpBodyApplyImpulseAtWorldPoint(body, impulso, cpBodyGetPosition(body));
     // Sorteia um impulso entre -10 e 10, para x e y
-    cpVect impulso = cpv(0, 0);
+    
+    // cpVect impulso = cpv(0, 0);
 
     // E aplica na bola
-    cpBodyApplyImpulseAtWorldPoint(body, impulso, cpBodyGetPosition(body));
+    
 
     cpVect robotPosition = cpBodyGetPosition(robotBody);
     cpVect ballPosition = cpBodyGetPosition(body);
