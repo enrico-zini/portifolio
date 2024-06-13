@@ -14,7 +14,6 @@ public class AppDigraph {
 
   public static void geraPath(Digraph g, String v, Stack<String> path) 
   {
-    // int dist = distTo.get(v);
     if (g.getAdj(v) != null) {
       for (String w : g.getAdj(v)) {
         path.add(w);
@@ -25,16 +24,16 @@ public class AppDigraph {
       if (path.size() > maxDist) {
         maxDist = path.size();
         maxDistPath = new ArrayList<>(path);
-        System.out.println(maxDist + ": " + maxDistPath);
       }
     }
+    System.out.println(path);
   }
 
   public static void main(String[] args) throws Exception {
 
     ArrayList<Caixa> caixas = new ArrayList<>();
     // LE CAIXAS DO ARQUIVO TXT
-    File file = new File("caixas.txt");
+    File file = new File("teste100.txt");
     try (BufferedReader br = new BufferedReader(new FileReader(file))) {
       String line;
       while ((line = br.readLine()) != null) {
@@ -55,6 +54,7 @@ public class AppDigraph {
         }
       }
     }
+    System.out.println("fim");
 
     //O MAIOR CAMINHO NECESSARIAMENTE COMEÇARÁ EM UMA CAIXA VAZIA
     
@@ -63,18 +63,20 @@ public class AppDigraph {
     for (List<String> valores: g.getValues()) {
       caixaCheia.addAll(valores);
     }
+    System.out.println("fim");
 
-    
     for (String v : g.getVerts()) {
+      System.out.println(v);
       //SOMENTE PROCURAR SE A CAIXA É VAZIA
       if (!caixaCheia.contains(v)) {
         Stack<String> path = new Stack<>();
         path.add(v);
         geraPath(g, v, path);
-        System.out.println(); 
       }
     }
+    System.out.println("fim");
+    
+    //System.out.println(g.toDot());
     System.out.println(maxDistPath);
-    System.out.println(g.toDot());
   }
 }
