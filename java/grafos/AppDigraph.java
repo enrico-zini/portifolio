@@ -33,7 +33,7 @@ public class AppDigraph {
 
     ArrayList<Caixa> caixas = new ArrayList<>();
     // LE CAIXAS DO ARQUIVO TXT
-    File file = new File("teste100.txt");
+    File file = new File("teste10.txt");
     try (BufferedReader br = new BufferedReader(new FileReader(file))) {
       String line;
       while ((line = br.readLine()) != null) {
@@ -65,18 +65,34 @@ public class AppDigraph {
     }
     System.out.println("fim");
 
-    for (String v : g.getVerts()) {
-      System.out.println(v);
-      //SOMENTE PROCURAR SE A CAIXA É VAZIA
-      if (!caixaCheia.contains(v)) {
-        Stack<String> path = new Stack<>();
-        path.add(v);
-        geraPath(g, v, path);
-      }
+
+    //TODO: partir do começo da lista topologica e ir colocando uma caixa dentro da outra
+    // EX:
+    // 1,2,3,4,5,6,7
+    // 1 cabe em 2
+    // 2 nao cabe em 3
+    // 2 cabe em 4
+    // 4 nao cabe em 5
+    // 4 cabe em 6
+    // 6 cabe em 7
+    // 7 nao cabe em niguem
+    // caminho final = 1,2,4,6,7
+    Topological tp = new Topological(g);
+    for (String string : tp.getTopological()) {
+      System.out.println(string);
     }
-    System.out.println("fim");
+
+    // for (String v : g.getVerts()) {
+    //   //SOMENTE PROCURAR SE A CAIXA É VAZIA
+    //   if (!caixaCheia.contains(v)) {
+    //     Stack<String> path = new Stack<>();
+    //     path.add(v);
+    //     geraPath(g, v, path);
+    //   }
+    // }
+    // System.out.println("fim");
     
     //System.out.println(g.toDot());
-    System.out.println(maxDistPath);
+    //System.out.println(maxDistPath);
   }
 }
